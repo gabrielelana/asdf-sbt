@@ -1,5 +1,8 @@
 language: java
 script:
+  - asdf plugin-install sbt https://github.com/gabrielelana/asdf-sbt
+  - asdf install sbt `asdf list-all sbt | tail -1`
+  - asdf current sbt `asdf list-all sbt | tail -1`
   - asdf plugin-test sbt https://github.com/gabrielelana/asdf-sbt.git 'sbt about'
 before_script:
   - git clone https://github.com/asdf-vm/asdf.git
