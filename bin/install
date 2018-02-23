@@ -71,7 +71,7 @@ get_download_url() {
 
   if [ "$install_type" = "version" ]
   then
-    local package_url="https://api.github.com/repos/sbt/sbt/tarball/v${version}"
+    local package_url="https://github.com/sbt/sbt/releases/download/v${version}/sbt-${version}.tgz"
     if [[ "x302" == "x$(get_url_status "$package_url")" ]]; then
       echo "$package_url"
       exit 0
