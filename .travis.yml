@@ -1,0 +1,9 @@
+language: java
+script:
+  - asdf plugin-test sbt https://github.com/gabrielelana/asdf-sbt.git 'sbt about'
+before_script:
+  - git clone https://github.com/asdf-vm/asdf.git
+  - . asdf/asdf.sh
+  os:
+    - linux
+    - osx
