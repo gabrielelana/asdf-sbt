@@ -1,13 +1,13 @@
-language: java
+language:
+  - java
 script:
-  - ./bin/list-all
   - asdf plugin-add sbt https://github.com/gabrielelana/asdf-sbt
   - asdf list-all sbt
   - LATEST_VERSION=`asdf list-all sbt | tail -1`
-  - echo $LATEST_VERSION
-  - asdf install sbt 1.1.1
-  - asdf global sbt 1.1.1
+  - asdf install sbt $LATEST_VERSION
+  - asdf global sbt $LATEST_VERSION
   - asdf current sbt
+  - test `asdf current sbt | cut -d' ' -f1` = $LATEST_VERSION
   - asdf plugin-test sbt https://github.com/gabrielelana/asdf-sbt.git
 before_script:
   - git clone https://github.com/asdf-vm/asdf.git
