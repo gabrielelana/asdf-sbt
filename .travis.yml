@@ -2,8 +2,11 @@ language: java
 script:
   - ./bin/list-all
   - asdf plugin-add sbt https://github.com/gabrielelana/asdf-sbt
-  - asdf install sbt `asdf list-all sbt | tail -1`
-  - asdf current sbt `asdf list-all sbt | tail -1`
+  - asdf list-all sbt
+  - LATEST_VERSION=`asdf list-all sbt | tail -1`
+  - echo $LATEST_VERSION
+  - asdf install sbt 1.1.1
+  - asdf current sbt 1.1.1
   - asdf plugin-test sbt https://github.com/gabrielelana/asdf-sbt.git 'sbt about'
 before_script:
   - git clone https://github.com/asdf-vm/asdf.git
