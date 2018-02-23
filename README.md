@@ -1,4 +1,4 @@
-# asdf-sbt
+# asdf-sbt [![Build Status](https://travis-ci.org/gabrielelana/asdf-sbt.svg?branch=master)](https://travis-ci.org/gabrielelana/asdf-sbt)
 
 This is SBT plugin for asdf version manager. Install script was adapted from https://github.com/lerencao/asdf-sbt
 
