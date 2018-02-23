@@ -8,7 +8,7 @@ script:
   - asdf install sbt 1.1.1
   - asdf global sbt 1.1.1
   - asdf current sbt
-  - asdf plugin-test sbt https://github.com/gabrielelana/asdf-sbt.git 'sbt about'
+  - asdf plugin-test sbt https://github.com/gabrielelana/asdf-sbt.git
 before_script:
   - git clone https://github.com/asdf-vm/asdf.git
   - . asdf/asdf.sh
