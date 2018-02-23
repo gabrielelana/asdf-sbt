@@ -1,1 +1,94 @@
 #!/usr/bin/env bash
+
+install_sbt() {
+  local install_type=$1
+  local version=$2
+  local install_path=$3
+
+  if ! which java >/dev/null; then
+    echo "You need a Java Runtime already installed on your computer."
+    echo "Follow the instructions for your platform or download it"
+    echo "from http://java.com/en/download"
+    exit 1
+  fi
+
+  if [ "version" != "${install_type}" ]; then
+    echo "The asdf-sbt plugin only supports installing official "
+    echo "binary releases as built by the Scala team."
+    exit 1
+  fi
+
+  local url_download="$(get_download_url $install_type $version)"
+
+  if [ "Distribution file not found. Exiting" == "${url_download}" ]; then
+    echo "The version specified was not found. Exiting"
+    exit 1
+  fi
+
+  if [ "$TMPDIR" = "" ]; then
+    local tmp_download_dir=$(mktemp -d)
+  else
+    local tmp_download_dir=$TMPDIR
+  fi
+
+  local source_path=$(get_download_file_path $install_type $version $tmp_download_dir)
+  download_source_file_url "$url_download" $source_path
+
+  (
+    tar zxf $source_path -C $install_path --strip-components=1 || exit 1
+  )
+}
+
+download_source_file() {
+  local install_type=$1
+  local version=$2
+  local download_path=$3
+  local download_url=$(get_download_url $install_type $version)
+
+  curl -Lo $download_path -C - $download_url
+}
+
+download_source_file_url() {
+  local url=$1
+  local download_path=$2
+
+  curl -Lo $download_path -C - $url
+}
+
+get_download_file_path() {
+  local install_type=$1
+  local version=$2
+  local tmp_download_dir=$3
+
+  local pkg_name="sbt-${version}.tgz"
+
+  echo "$tmp_download_dir/$pkg_name"
+}
+
+get_download_url() {
+  local install_type=$1
+  local version=$2
+
+  if [ "$install_type" = "version" ]
+  then
+    local package_url="https://github.com/sbt/sbt/archive/v${version}.tar.gz"
+  else
+    local package_url="https://github.com/sbt/sbt/archive/${version}.tar.gz"
+  fi
+
+  if [[ "x200" == "x$(get_url_status "$package_url")" ]]; then
+    echo "$package_url"
+  else
+    echo "Distribution file not found. Exiting"
+    exit 1
+  fi
+}
+
+get_url_status() {
+  local url="$1"
+  local status="$(curl -s -I -L "$url" | grep 'HTTP/1.1' | awk '{print $2}' | tail -n 1)"
+
+  echo "$status"
+}
+
+install_sbt $ASDF_INSTALL_TYPE $ASDF_INSTALL_VERSION $ASDF_INSTALL_PATH
