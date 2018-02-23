@@ -1,6 +1,6 @@
 # asdf-sbt
 
-This is SBT plugin for asdf version manager.
+This is SBT plugin for asdf version manager. Install script was adapted from https://github.com/lerencao/asdf-sbt
 
 ``` shell
 asdf plugin-add sbt https://github.com/gabrielelana/asdf-sbt
