@@ -6,7 +6,8 @@ script:
   - LATEST_VERSION=`asdf list-all sbt | tail -1`
   - echo $LATEST_VERSION
   - asdf install sbt 1.1.1
-  - asdf current sbt 1.1.1
+  - asdf global sbt 1.1.1
+  - asdf current sbt
   - asdf plugin-test sbt https://github.com/gabrielelana/asdf-sbt.git 'sbt about'
 before_script:
   - git clone https://github.com/asdf-vm/asdf.git
