@@ -71,22 +71,20 @@ get_download_url() {
 
   if [ "$install_type" = "version" ]
   then
-    local package_url="https://github.com/sbt/sbt/archive/v${version}.tar.gz"
-  else
-    local package_url="https://github.com/sbt/sbt/archive/${version}.tar.gz"
+    local package_url="https://api.github.com/repos/sbt/sbt/tarball/v${version}"
+    if [[ "x302" == "x$(get_url_status "$package_url")" ]]; then
+      echo "$package_url"
+      exit 0
+    fi
   fi
 
-  if [[ "x200" == "x$(get_url_status "$package_url")" ]]; then
-    echo "$package_url"
-  else
-    echo "Distribution file not found. Exiting"
-    exit 1
-  fi
+  echo "Distribution file not found. Exiting"
+  exit 1
 }
 
 get_url_status() {
   local url="$1"
-  local status="$(curl -s -I -L "$url" | grep 'HTTP/1.1' | awk '{print $2}' | tail -n 1)"
+  local status="$(curl -s -I "$url" | grep 'HTTP/1.1' | awk '{print $2}' | tail -n 1)"
 
   echo "$status"
 }
