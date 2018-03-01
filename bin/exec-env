@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# Shamelessly copied from https://github.com/Proemion/asdf-maven
+if asdf current java > /dev/null 2>&1 ; then
+  java_version=$(asdf current java | cut -f1 -d' ')
+  export JAVA_HOME=$(asdf where java "$java_version")
+fi
