@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 
-releases_path=https://api.github.com/repos/sbt/sbt/tags
-cmd="curl -s"
+releases_path=https://api.github.com/repos/sbt/sbt/releases
+cmd="curl -sL"
 if [ -n "$OAUTH_TOKEN" ]; then
   cmd="$cmd -H 'Authorization: token $OAUTH_TOKEN'"
 fi
 cmd="$cmd $releases_path"
 
-sort_cmd='sort'
-if sort --help | grep -q -- '-V'; then
-  sort_cmd='sort -V'
-fi
+function sort_versions() {
+  sed 'h; s/[+-]/./g; s/.p\([[:digit:]]\)/.z\1/; s/$/.z/; G; s/\n/ /' |
+    LC_ALL=C sort -t. -k 1,1 -k 2,2n -k 3,3n -k 4,4n -k 5,5n | awk '{print $2}'
+}
 
 # Fetch all tag names, and get only second column. Then remove all unnecesary characters.
-versions=$(eval $cmd | grep 'name' | sed 's/^.*"name": "v\([^"]\+\)",/\1/' | $sort_cmd)
+versions=$(eval $cmd | grep 'tag_name' | sed -e 's/.* "v//;s/",//' | sort_versions)
 echo $versions
