@@ -84,7 +84,7 @@ get_download_url() {
 
 get_url_status() {
   local url="$1"
-  local status="$(curl -s -I "$url" | grep 'HTTP/1.1' | awk '{print $2}' | tail -n 1)"
+  local status="$(curl -s -I "$url" | grep 'HTTP/2' | awk '{print $2}' | tail -n 1)"
 
   echo "$status"
 }
